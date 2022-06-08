@@ -35,7 +35,7 @@ public class Main {
     }
     private static void checkDirectoryExists(Path path){
         if (!Files.exists(path)) {
-            System.exit(1);
+            throw new RuntimeException("Directory not Found!");
         }
     }
 
