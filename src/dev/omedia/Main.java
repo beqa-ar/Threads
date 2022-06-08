@@ -3,10 +3,13 @@ package dev.omedia;
 import dev.omedia.FirstExercise.FileType;
 import dev.omedia.FirstExercise.ImageFileConverter;
 import dev.omedia.FirstExercise.ValidationException;
+import dev.omedia.SecondExercise.FileCopier;
 
 import javax.imageio.ImageIO;
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.Scanner;
 import java.util.concurrent.ExecutionException;
 import java.util.regex.Matcher;
@@ -14,7 +17,29 @@ import java.util.regex.Pattern;
 
 public class Main {
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) {
+      //  firstExercise();
+        secondExercise();
+    }
+
+    private static void secondExercise() {
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Enter Number of Threads!");
+        int nThreads = Integer.parseInt(scanner.nextLine());
+        Path source=Path.of("C:/Users/beqa/Desktop/java-lang-week-5-beqa-ar/src/dev/omedia");
+        Path destination=Path.of("C:/Users/beqa/Desktop/java-lang-week-5-beqa-ar/a");
+
+        checkDirectoryExists(source);
+        checkDirectoryExists(destination);
+        FileCopier.copy(source,destination, nThreads);
+    }
+    private static void checkDirectoryExists(Path path){
+        if (!Files.exists(path)) {
+            System.exit(1);
+        }
+    }
+
+    private static void firstExercise() throws IOException {
         Scanner scanner = new Scanner(System.in);
 
         System.out.println("Enter File Path. format: fileName.fileExtension   example: text.txt");
@@ -27,7 +52,7 @@ public class Main {
         checkFileTypeValidation(convertToType);
 
         System.out.println("Enter Number of Threads!");
-        int nThreads =Integer.parseInt(scanner.nextLine());
+        int nThreads = Integer.parseInt(scanner.nextLine());
 
         FileType fileType;
         if (convertToType.equals("TXT")) {
@@ -39,7 +64,7 @@ public class Main {
 
         ImageFileConverter imageFileConverter = new ImageFileConverter();
         try {
-            imageFileConverter.convert(ImageIO.read(new File(path)), fileType,nThreads);
+            imageFileConverter.convert(ImageIO.read(new File(path)), fileType, nThreads);
         } catch (IOException | ExecutionException | InterruptedException e) {
             throw new IOException(e);
         }
